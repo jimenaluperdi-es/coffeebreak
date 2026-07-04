@@ -1,0 +1,15 @@
+build/
+dist/
+target/
+*.war
+*.class
+nbproject/private/
+.DS_Store
+
+# Credenciales y configuracion sensible
+src/conexion/ConexionBD.java
+setenv.sh
+*.env
+.env
+*.env.local
+credentials*

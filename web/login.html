@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - CoffeeBreak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div id="loaderGlobal" class="loader-container">
+        <div class="loader"></div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill"></i>Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="menu.html"><i class="bi bi-menu-app-fill"></i>Menú</a></li>
+                    <li class="nav-item"><a class="nav-link" href="carrito.html"><i class="bi bi-cart-fill"></i>Carrito <span class="carrito-badge">0</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="historial.html"><i class="bi bi-clock-fill"></i>Pedidos</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card animacion-fade">
+            <div class="auth-icon">
+                <i class="bi bi-person-fill"></i>
+            </div>
+            <h3>Iniciar Sesión</h3>
+            <p class="subtitle">Accede a tu cuenta para realizar pedidos</p>
+
+            <form id="loginForm" novalidate>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required placeholder="tu@email.com">
+                    <div class="invalid-feedback">Introduce un email válido</div>
+                </div>
+                <div class="mb-3">
+                    <label for="contrasena" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="contrasena" required minlength="8" placeholder="Mínimo 8 caracteres">
+                    <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres</div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 btn-lg">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <small class="text-muted">¿No tienes cuenta? <a href="registro.html" style="color: var(--color-cafe); font-weight: 600;">Regístrate</a></small>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5><i class="bi bi-cup-hot-fill me-2"></i>CoffeeBreak</h5>
+                    <p>Tu cafetería universitaria inteligente.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="menu.html">Menú</a></li>
+                        <li><a href="carrito.html">Carrito</a></li>
+                        <li><a href="historial.html">Mis pedidos</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Horario</h5>
+                    <ul class="list-unstyled">
+                        <li>Lunes - Viernes: 7:30 - 20:00</li>
+                        <li>Sábados: 8:00 - 14:00</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4" style="border-color: rgba(255,255,255,0.1);">
+            <p class="text-center mb-0"><small>&copy; 2026 CoffeeBreak</small></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/validaciones.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const contrasena = document.getElementById('contrasena').value;
+            if (!Validaciones.esEmailValido(email)) {
+                Toast.mostrar('Email no válido', 'danger');
+                return;
+            }
+            if (!Validaciones.esContrasenaValida(contrasena)) {
+                Toast.mostrar('La contraseña debe tener al menos 8 caracteres', 'danger');
+                return;
+            }
+            mostrarLoader();
+            try {
+                const data = await API.post(API.getBaseUrl() + '/api/login', { email, contrasena });
+                Toast.mostrar('Inicio de sesión exitoso', 'success');
+                setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+            } catch (error) {
+                Toast.mostrar(error.message, 'danger');
+            } finally {
+                ocultarLoader();
+            }
+        });
+    </script>
+</body>
+</html>
