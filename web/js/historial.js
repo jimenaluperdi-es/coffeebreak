@@ -43,6 +43,7 @@ function renderizarHistorial(pedidos) {
     container.innerHTML = '';
     pedidos.forEach(pedido => {
         const estadoClass = obtenerEstadoClass(pedido.nombreEstado);
+        const estadoIcono = obtenerIconoEstado(pedido.nombreEstado);
         const stepperHtml = generarStepper(pedido.nombreEstado);
         const div = document.createElement('div');
         div.className = 'card mb-3 animacion-fade';
@@ -53,14 +54,14 @@ function renderizarHistorial(pedidos) {
                         <small class="text-muted">Pedido #${pedido.idPedido}</small>
                         <div class="fw-bold">${formatearFecha(pedido.fechaPedido)}</div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         ${stepperHtml}
                     </div>
                     <div class="col-md-2">
                         <div class="fw-bold">${pedido.monto ? pedido.monto.toFixed(2) + ' €' : '—'}</div>
                     </div>
-                    <div class="col-md-1">
-                        <span class="estado-badge ${estadoClass}">${pedido.nombreEstado}</span>
+                    <div class="col-md-2 text-center">
+                        <div class="estado-dot ${estadoClass}">${estadoIcono}</div>
                     </div>
                     <div class="col-md-2 text-end">
                         <button class="btn btn-outline-primary btn-sm" onclick="verDetallePedido(${pedido.idPedido})">
@@ -72,6 +73,33 @@ function renderizarHistorial(pedidos) {
         `;
         container.appendChild(div);
     });
+    container.insertAdjacentHTML('beforeend', generarLeyendaEstados());
+}
+
+function obtenerIconoEstado(estado) {
+    const iconos = {
+        'Pendiente': '<i class="bi bi-hourglass"></i>',
+        'En preparación': '<i class="bi bi-gear-wide-connected"></i>',
+        'Listo para recoger': '<i class="bi bi-bell-fill"></i>',
+        'Entregado': '<i class="bi bi-check-all"></i>',
+    };
+    return iconos[estado] || '<i class="bi bi-question-circle"></i>';
+}
+
+function generarLeyendaEstados() {
+    const estados = [
+        { nombre: 'Pendiente', icono: 'bi bi-hourglass' },
+        { nombre: 'En preparación', icono: 'bi bi-gear-wide-connected' },
+        { nombre: 'Listo para recoger', icono: 'bi bi-bell-fill' },
+        { nombre: 'Entregado', icono: 'bi bi-check-all' },
+    ];
+    let html = '<div class="estado-leyenda mt-4 p-3"><small class="fw-bold text-muted me-3">Leyenda de estados:</small>';
+    estados.forEach(e => {
+        const cls = obtenerEstadoClass(e.nombre);
+        html += `<span class="leyenda-item me-3"><span class="estado-dot ${cls}"><i class="${e.icono}"></i></span> ${e.nombre}</span>`;
+    });
+    html += '</div>';
+    return html;
 }
 
 const STEPS = ['Pendiente', 'En preparación', 'Listo para recoger', 'Entregado'];
@@ -133,6 +161,7 @@ async function verDetallePedido(idPedido) {
         const pedido = data.pedido;
         const detalles = data.detalles || [];
         const estadoClass = obtenerEstadoClass(pedido.nombreEstado);
+        const estadoIcono = obtenerIconoEstado(pedido.nombreEstado);
         const stepperHtml = generarStepper(pedido.nombreEstado);
         let html = `
             <div class="mb-3">
@@ -141,7 +170,7 @@ async function verDetallePedido(idPedido) {
                         <small class="text-muted">Pedido #${pedido.idPedido}</small>
                         <div class="fw-bold">${formatearFecha(pedido.fechaPedido)}</div>
                     </div>
-                    <span class="estado-badge ${estadoClass}">${pedido.nombreEstado}</span>
+                    <span class="estado-badge ${estadoClass}">${estadoIcono} ${pedido.nombreEstado}</span>
                 </div>
                 <div class="mt-3 p-3" style="background:#f8f9fa;border-radius:12px;">
                     ${stepperHtml}

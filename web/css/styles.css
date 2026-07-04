@@ -361,6 +361,39 @@ body {
     font-weight: 600;
 }
 
+.estado-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+}
+
+.estado-leyenda {
+    background: var(--color-blanco);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra-suave);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.estado-leyenda .leyenda-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--color-texto-claro);
+}
+
+.estado-leyenda .estado-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+}
+
 .estado-pendiente {
     background-color: #FFF3CD;
     color: #856404;
