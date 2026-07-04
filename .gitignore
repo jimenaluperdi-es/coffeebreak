@@ -13,3 +13,6 @@ setenv.sh
 .env
 *.env.local
 credentials*
+
+# Documentacion local
+AGENTS.md

@@ -381,6 +381,129 @@ body {
     color: #383D41;
 }
 
+/* Progress Stepper */
+.progress-stepper {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding: 4px 0;
+}
+
+.progress-stepper .step-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.progress-stepper .step-wrapper:last-child {
+    flex: 0;
+}
+
+.progress-stepper .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.progress-stepper .step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e9ecef;
+    border: 3px solid #d4d4d4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #999;
+    transition: all 0.4s ease;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.progress-stepper .step.completed .step-circle {
+    background: var(--color-exito);
+    border-color: var(--color-exito);
+    color: white;
+}
+
+.progress-stepper .step.active .step-circle {
+    background: var(--color-cafe);
+    border-color: var(--color-cafe);
+    color: white;
+    box-shadow: 0 0 0 5px rgba(111, 78, 55, 0.2);
+    transform: scale(1.1);
+}
+
+.progress-stepper .step-label {
+    font-size: 0.65rem;
+    margin-top: 6px;
+    color: #999;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.progress-stepper .step.completed .step-label {
+    color: var(--color-exito);
+}
+
+.progress-stepper .step.active .step-label {
+    color: var(--color-cafe-oscuro);
+    font-weight: 800;
+}
+
+.progress-stepper .connector {
+    flex: 1;
+    height: 3px;
+    background: #e0e0e0;
+    margin: 0 4px;
+    margin-bottom: 22px;
+    border-radius: 2px;
+    transition: background 0.4s ease;
+}
+
+.progress-stepper .connector.completed {
+    background: var(--color-exito);
+}
+
+.progress-stepper .connector.active {
+    background: linear-gradient(90deg, var(--color-exito) 50%, var(--color-cafe) 50%);
+}
+
+/* Badge que acompaña al stepper */
+.estado-badge-stepper {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 25px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+    .progress-stepper .step-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+        border-width: 2px;
+    }
+    .progress-stepper .step-label {
+        font-size: 0.55rem;
+        white-space: normal;
+        max-width: 60px;
+    }
+    .progress-stepper .connector {
+        margin-bottom: 18px;
+        margin: 0 2px;
+        margin-bottom: 18px;
+    }
+}
+
 .footer {
     background: linear-gradient(135deg, var(--color-cafe-oscuro), var(--color-cafe));
     color: var(--color-beige-claro);

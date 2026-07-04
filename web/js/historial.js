@@ -43,6 +43,7 @@ function renderizarHistorial(pedidos) {
     container.innerHTML = '';
     pedidos.forEach(pedido => {
         const estadoClass = obtenerEstadoClass(pedido.nombreEstado);
+        const stepperHtml = generarStepper(pedido.nombreEstado);
         const div = document.createElement('div');
         div.className = 'card mb-3 animacion-fade';
         div.innerHTML = `
@@ -52,14 +53,14 @@ function renderizarHistorial(pedidos) {
                         <small class="text-muted">Pedido #${pedido.idPedido}</small>
                         <div class="fw-bold">${formatearFecha(pedido.fechaPedido)}</div>
                     </div>
-                    <div class="col-md-3">
-                        <span class="estado-badge ${estadoClass}">${pedido.nombreEstado}</span>
+                    <div class="col-md-4">
+                        ${stepperHtml}
                     </div>
                     <div class="col-md-2">
                         <div class="fw-bold">${pedido.monto ? pedido.monto.toFixed(2) + ' €' : '—'}</div>
                     </div>
-                    <div class="col-md-2">
-                        <small class="text-muted">${pedido.metodoPago || '—'}</small>
+                    <div class="col-md-1">
+                        <span class="estado-badge ${estadoClass}">${pedido.nombreEstado}</span>
                     </div>
                     <div class="col-md-2 text-end">
                         <button class="btn btn-outline-primary btn-sm" onclick="verDetallePedido(${pedido.idPedido})">
@@ -71,6 +72,38 @@ function renderizarHistorial(pedidos) {
         `;
         container.appendChild(div);
     });
+}
+
+const STEPS = ['Pendiente', 'En preparación', 'Listo para recoger', 'Entregado'];
+
+function generarStepper(estadoActual) {
+    const idx = STEPS.indexOf(estadoActual);
+    if (idx === -1) return '';
+
+    let html = '<div class="progress-stepper">';
+    STEPS.forEach((step, i) => {
+        let cls = 'step';
+        if (i < idx) cls += ' completed';
+        else if (i === idx) cls += ' active';
+
+        const icon = i < idx ? '<i class="bi bi-check-lg"></i>' : i + 1;
+
+        html += `
+            <div class="step-wrapper">
+                <div class="${cls}">
+                    <div class="step-circle">${icon}</div>
+                    <div class="step-label">${step}</div>
+                </div>`;
+        if (i < STEPS.length - 1) {
+            let connCls = 'connector';
+            if (i < idx) connCls += ' completed';
+            else if (i === idx) connCls += ' active';
+            html += `<div class="${connCls}"></div>`;
+        }
+        html += '</div>';
+    });
+    html += '</div>';
+    return html;
 }
 
 function obtenerEstadoClass(estado) {
@@ -100,16 +133,18 @@ async function verDetallePedido(idPedido) {
         const pedido = data.pedido;
         const detalles = data.detalles || [];
         const estadoClass = obtenerEstadoClass(pedido.nombreEstado);
+        const stepperHtml = generarStepper(pedido.nombreEstado);
         let html = `
             <div class="mb-3">
-                <div class="row">
-                    <div class="col-6">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
                         <small class="text-muted">Pedido #${pedido.idPedido}</small>
                         <div class="fw-bold">${formatearFecha(pedido.fechaPedido)}</div>
                     </div>
-                    <div class="col-6 text-end">
-                        <span class="estado-badge ${estadoClass}">${pedido.nombreEstado}</span>
-                    </div>
+                    <span class="estado-badge ${estadoClass}">${pedido.nombreEstado}</span>
+                </div>
+                <div class="mt-3 p-3" style="background:#f8f9fa;border-radius:12px;">
+                    ${stepperHtml}
                 </div>
             </div>
             <hr>
