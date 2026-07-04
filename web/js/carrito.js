@@ -19,12 +19,12 @@ const Carrito = {
                 nombre: producto.nombreProducto,
                 precio: producto.precio,
                 cantidad: cantidad,
-                imagen: producto.imagen || 'bi-cup-hot-fill',
+                idCategoria: producto.idCategoria || null,
+                imagen: producto.imagen || null,
             });
         }
         this.guardar(items);
         Toast.mostrar(`${producto.nombreProducto} añadido al carrito`, 'success');
-        this.actualizarBadge();
     },
     eliminar: function(idProducto) {
         let items = this.obtener();
@@ -33,7 +33,10 @@ const Carrito = {
         if (typeof renderizarCarrito === 'function') {
             renderizarCarrito();
         }
-        Toast.mostrar('Producto eliminado del carrito', 'warning');
+        if (typeof renderizarResumenCarrito === 'function') {
+            renderizarResumenCarrito();
+        }
+        Toast.mostrar('Producto eliminado', 'warning');
     },
     actualizarCantidad: function(idProducto, cantidad) {
         let items = this.obtener();
@@ -48,12 +51,18 @@ const Carrito = {
             if (typeof renderizarCarrito === 'function') {
                 renderizarCarrito();
             }
+            if (typeof renderizarResumenCarrito === 'function') {
+                renderizarResumenCarrito();
+            }
         }
     },
     vaciar: function() {
         this.guardar([]);
         if (typeof renderizarCarrito === 'function') {
             renderizarCarrito();
+        }
+        if (typeof renderizarResumenCarrito === 'function') {
+            renderizarResumenCarrito();
         }
     },
     contar: function() {
@@ -71,11 +80,11 @@ const Carrito = {
         return this.calcularSubtotal() + this.calcularIVA();
     },
     actualizarBadge: function() {
-        const badges = document.querySelectorAll('.carrito-badge');
+        const badges = document.querySelectorAll('.carrito-badge-mobile, .carrito-badge');
         const count = this.contar();
         badges.forEach(badge => {
             badge.textContent = count;
-            badge.style.display = count > 0 ? 'inline' : 'none';
+            badge.style.display = count > 0 ? 'flex' : 'none';
         });
     },
     iniciar: function() {

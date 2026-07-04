@@ -7,54 +7,45 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderizarResumenCarrito() {
     const items = Carrito.obtener();
     const container = document.getElementById('resumenItems');
-    const totalContainer = document.getElementById('resumenTotal');
     if (!container) return;
+
     if (!items || items.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
                 <i class="bi bi-cart-x"></i>
                 <h4>Tu carrito está vacío</h4>
-                <p class="text-muted">Añade productos desde el menú</p>
-                <a href="menu.html" class="btn btn-primary mt-3">Ver Menú</a>
+                <p>Añade productos desde el menú</p>
+                <a href="menu.html" class="btn-primary-custom" style="display:inline-block; width:auto; padding:0.7rem 1.5rem; text-decoration:none;">Ver Menú</a>
             </div>
         `;
-        if (totalContainer) totalContainer.style.display = 'none';
         document.getElementById('confirmarPedidoBtn').disabled = true;
         return;
     }
+
     document.getElementById('confirmarPedidoBtn').disabled = false;
-    if (totalContainer) totalContainer.style.display = 'block';
     container.innerHTML = '';
+
     items.forEach(item => {
+        const iconos = {1:'bi-cup-hot-fill', 2:'bi-droplet-fill', 3:'bi-basket-fill', 4:'bi-egg-fried'};
+        const icono = iconos[item.idCategoria] || item.imagen || 'bi-box-seam-fill';
         const div = document.createElement('div');
-        div.className = 'carrito-item animacion-fade';
+        div.className = 'cart-item-card';
         div.innerHTML = `
-            <div class="row align-items-center">
-                <div class="col-md-5">
-                    <div class="item-nombre">${item.nombre}</div>
-                </div>
-                <div class="col-md-2">
-                    <div class="item-precio">${item.precio.toFixed(2)} €</div>
-                </div>
-                <div class="col-md-2">
-                    <div class="cantidad-control">
-                        <button onclick="Carrito.actualizarCantidad(${item.idProducto}, ${item.cantidad - 1})">-</button>
-                        <input type="text" value="${item.cantidad}" readonly>
-                        <button onclick="Carrito.actualizarCantidad(${item.idProducto}, ${item.cantidad + 1})">+</button>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="item-precio">${(item.precio * item.cantidad).toFixed(2)} €</div>
-                </div>
-                <div class="col-md-1">
-                    <button class="btn btn-danger btn-sm" onclick="Carrito.eliminar(${item.idProducto})">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
+            <div class="item-icon"><i class="bi ${icono}"></i></div>
+            <div class="item-info">
+                <div class="item-name">${item.nombre}</div>
+                <div class="item-price">${item.precio.toFixed(2)} € / ud.</div>
             </div>
+            <div class="item-qty">
+                <button onclick="Carrito.actualizarCantidad(${item.idProducto}, ${item.cantidad - 1}); renderizarResumenCarrito();">−</button>
+                <span>${item.cantidad}</span>
+                <button onclick="Carrito.actualizarCantidad(${item.idProducto}, ${item.cantidad + 1}); renderizarResumenCarrito();">+</button>
+            </div>
+            <div class="item-total">${(item.precio * item.cantidad).toFixed(2)} €</div>
         `;
         container.appendChild(div);
     });
+
     actualizarResumen();
 }
 
@@ -68,7 +59,7 @@ function actualizarResumen() {
 }
 
 function configurarMetodosPago() {
-    const metodos = document.querySelectorAll('.metodo-pago-card');
+    const metodos = document.querySelectorAll('.payment-card');
     metodos.forEach(metodo => {
         metodo.addEventListener('click', function() {
             metodos.forEach(m => m.classList.remove('selected'));
@@ -94,7 +85,7 @@ async function confirmarPedido() {
         const data = await API.get(API.getBaseUrl() + '/api/sesion');
         if (!data.autenticado) {
             Toast.mostrar('Debes iniciar sesión para realizar un pedido', 'warning');
-            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+            setTimeout(() => { window.location.href = 'login.html'; }, 1200);
             return;
         }
         const pedidoData = {
@@ -105,12 +96,12 @@ async function confirmarPedido() {
                 cantidad: item.cantidad,
             })),
         };
-        const resultado = await API.post(API.getBaseUrl() + '/api/pedido', pedidoData);
+        await API.post(API.getBaseUrl() + '/api/pedido', pedidoData);
         Toast.mostrar('Pedido realizado con éxito!', 'success');
         Carrito.vaciar();
-        setTimeout(() => { window.location.href = 'historial.html'; }, 1500);
+        setTimeout(() => { window.location.href = 'historial.html'; }, 1200);
     } catch (error) {
-        Toast.mostrar('Error al confirmar pedido: ' + error.message, 'danger');
+        Toast.mostrar('Error: ' + error.message, 'danger');
     } finally {
         ocultarLoader();
     }

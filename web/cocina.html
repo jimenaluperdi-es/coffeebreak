@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocina - CoffeeBreak</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div id="loaderGlobal" class="loader-container">
+        <div class="loader"></div>
+    </div>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="kitchen-page">
+        <!-- LEFT COLUMN: Active Orders -->
+        <div class="kitchen-left">
+            <div class="kitchen-header">
+                <h1><i class="bi bi-cup-hot-fill" style="color:var(--caramelo);"></i> Cocina</h1>
+                <span class="kpi-badge" id="orderCountBadge">0 pedidos</span>
+            </div>
+
+            <div class="kitchen-orders" id="kitchenOrdersContainer">
+                <div style="grid-column:1/-1; text-align:center; padding:3rem 1rem; color:var(--texto-secundario);">
+                    <i class="bi bi-inbox" style="font-size:2.5rem; display:block; margin-bottom:0.5rem;"></i>
+                    <p style="font-weight:600;">No hay pedidos activos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Control & Metrics -->
+        <div class="kitchen-right">
+            <div class="kr-section">
+                <h4><i class="bi bi-box-seam me-1" style="color:var(--caramelo);"></i> Control Stock Express</h4>
+                <div id="stockChecklist">
+                    <label class="stock-checkbox"><input type="checkbox" checked> Café molido</label>
+                    <label class="stock-checkbox"><input type="checkbox" checked> Leche entera</label>
+                    <label class="stock-checkbox"><input type="checkbox" checked> Leche desnatada</label>
+                    <label class="stock-checkbox"><input type="checkbox" checked> Pan bimbo</label>
+                    <label class="stock-checkbox"><input type="checkbox" checked> Jamón york</label>
+                    <label class="stock-checkbox"><input type="checkbox" checked> Queso</label>
+                    <label class="stock-checkbox"><input type="checkbox" checked> Bollos</label>
+                    <label class="stock-checkbox"><input type="checkbox"> Croissants</label>
+                </div>
+            </div>
+
+            <div class="kr-section">
+                <h4><i class="bi bi-gear me-1" style="color:var(--caramelo);"></i> Motor de Tiempos</h4>
+                <div class="engine-status">
+                    <span style="font-size:0.8rem; font-weight:600; color:var(--texto-secundario);">Capacidad</span>
+                    <div class="engine-bar">
+                        <div class="engine-fill" style="width:60%;" id="capacityBar"></div>
+                    </div>
+                    <span class="engine-label" id="capacityLabel">60%</span>
+                </div>
+                <div class="engine-status">
+                    <span style="font-size:0.8rem; font-weight:600; color:var(--texto-secundario);">Cola</span>
+                    <div class="engine-bar">
+                        <div class="engine-fill" style="width:25%; background:var(--exito);" id="queueBar"></div>
+                    </div>
+                    <span class="engine-label" id="queueLabel">~5 min</span>
+                </div>
+            </div>
+
+            <div class="kr-section">
+                <h4><i class="bi bi-bar-chart me-1" style="color:var(--caramelo);"></i> Resumen</h4>
+                <div class="kr-summary">
+                    <div class="kr-stat">
+                        <div class="kr-num" id="statProcesados">0</div>
+                        <div class="kr-label">Procesados</div>
+                    </div>
+                    <div class="kr-stat">
+                        <div class="kr-num" id="statPendientes">0</div>
+                        <div class="kr-label">Pendientes</div>
+                    </div>
+                    <div class="kr-stat">
+                        <div class="kr-num" id="statEnPreparacion">0</div>
+                        <div class="kr-label">En cocina</div>
+                    </div>
+                    <div class="kr-stat">
+                        <div class="kr-num" id="statHoy">0</div>
+                        <div class="kr-label">Hoy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/validaciones.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cocina.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CoffeeBreak - Cafetería Universitaria</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,134 +12,110 @@
     <div id="loaderGlobal" class="loader-container">
         <div class="loader"></div>
     </div>
-
     <div id="toastContainer" class="toast-container"></div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html"><i class="bi bi-house-fill"></i>Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="menu.html"><i class="bi bi-menu-app-fill"></i>Menú</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="carrito.html"><i class="bi bi-cart-fill"></i>Carrito <span class="carrito-badge">0</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="historial.html"><i class="bi bi-clock-fill"></i>Pedidos</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item" id="navLogin">
-                        <a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i>Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item" id="navRegistro">
-                        <a class="nav-link" href="registro.html"><i class="bi bi-person-plus-fill"></i>Registrarse</a>
-                    </li>
-                    <li class="nav-item" id="navPerfil" style="display:none;">
-                        <a class="nav-link" href="historial.html"><i class="bi bi-person-fill"></i><span id="navUsuario">Usuario</span></a>
-                    </li>
-                    <li class="nav-item" id="navCerrarSesion" style="display:none;">
-                        <a class="nav-link" href="#" onclick="cerrarSesion()"><i class="bi bi-box-arrow-right"></i>Cerrar Sesión</a>
-                    </li>
-                </ul>
+    <!-- DESKTOP NAV -->
+    <nav class="desktop-nav">
+        <div class="dnav-inner">
+            <div class="dnav-left">
+                <div class="dnav-links">
+                    <a href="menu.html">Menú</a>
+                    <a href="carrito.html">Carrito</a>
+                    <a href="historial.html">Mis Pedidos</a>
+                </div>
+            </div>
+            <a href="index.html" class="dnav-center dnav-brand"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
+            <div class="dnav-right">
+                <div class="dnav-guest">
+                    <a href="login.html">Iniciar Sesión</a>
+                    <a href="registro.html" class="dnav-btn">Registrarse</a>
+                </div>
+                <div class="dnav-user">
+                    <span class="dnav-user-name"><i class="bi bi-person-fill"></i><span id="dnavUserName">Usuario</span></span>
+                    <a href="#" onclick="cerrarSesion()">Cerrar Sesión</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <section class="hero-section">
-        <div class="container position-relative">
-            <h1 class="animacion-fade">☕ CoffeeBreak</h1>
-            <p class="animacion-fade">Pide tu café favorito desde el móvil y recógelo sin esperas. La forma más inteligente de disfrutar tu descanso universitario.</p>
-            <div class="mt-4 animacion-fade">
-                <a href="menu.html" class="btn btn-light btn-lg me-3"><i class="bi bi-eye me-2"></i>Ver Menú</a>
-                <a href="registro.html" class="btn btn-outline-light btn-lg"><i class="bi bi-person-plus me-2"></i>Registrarse</a>
+    <!-- DRAWER OVERLAY -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="cerrarDrawer()"></div>
+
+    <!-- DRAWER -->
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="brand"><i class="bi bi-cup-hot-fill"></i> CoffeeBreak</div>
+        </div>
+        <div class="drawer-user nav-user" style="display:none;">
+            <div class="avatar" id="drawerAvatar">U</div>
+            <div>
+                <div class="user-name" id="drawerUserName">Usuario</div>
+                <div class="user-email" id="drawerUserEmail">usuario@email.com</div>
+            </div>
+        </div>
+        <div class="drawer-nav">
+            <a href="index.html" class="active"><i class="bi bi-house-fill"></i>Inicio</a>
+            <a href="menu.html"><i class="bi bi-menu-app-fill"></i>Menú</a>
+            <a href="carrito.html"><i class="bi bi-cart-fill"></i>Carrito</a>
+            <a href="historial.html"><i class="bi bi-clock-fill"></i>Mis Pedidos</a>
+            <a href="login.html" class="nav-guest"><i class="bi bi-box-arrow-in-right"></i>Iniciar Sesión</a>
+            <a href="registro.html" class="nav-guest"><i class="bi bi-person-plus-fill"></i>Registrarse</a>
+            <a href="#" class="nav-user" style="display:none;" onclick="cerrarSesion()"><i class="bi bi-box-arrow-right"></i>Cerrar Sesión</a>
+        </div>
+        <div class="drawer-footer">
+            <small style="color:var(--texto-claro);">CoffeeBreak v1.0</small>
+        </div>
+    </div>
+
+    <!-- APP BAR -->
+    <div class="app-bar">
+        <button class="btn-icon" onclick="abrirDrawer()"><i class="bi bi-list"></i></button>
+        <a href="index.html" class="brand"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
+        <div class="app-bar-right">
+            <a href="carrito.html" class="btn-icon">
+                <i class="bi bi-cart-fill"></i>
+                <span class="carrito-badge-mobile" id="cartBadgeMobile">0</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero-modern">
+        <h1>☕ CoffeeBreak</h1>
+        <p>Pide tu café favorito desde el móvil y recógelo sin esperas. La forma más inteligente de disfrutar tu descanso universitario.</p>
+        <a href="menu.html" class="btn-hero"><i class="bi bi-eye me-2"></i>Ver Menú</a>
+    </section>
+
+    <!-- FEATURES -->
+    <section style="padding:2rem 1rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.75rem; max-width:900px; margin:0 auto;">
+            <div style="background:var(--avena); border-radius:var(--radio); padding:1.25rem; text-align:center;">
+                <i class="bi bi-phone-fill" style="font-size:2rem; color:var(--caramelo);"></i>
+                <h5 style="font-weight:700; font-size:0.85rem; margin-top:0.5rem; color:var(--espresso);">Pide desde tu móvil</h5>
+                <p style="font-size:0.8rem; color:var(--texto-secundario); margin:0;">Selecciona tus productos desde cualquier lugar del campus.</p>
+            </div>
+            <div style="background:var(--avena); border-radius:var(--radio); padding:1.25rem; text-align:center;">
+                <i class="bi bi-clock-fill" style="font-size:2rem; color:var(--caramelo);"></i>
+                <h5 style="font-weight:700; font-size:0.85rem; margin-top:0.5rem; color:var(--espresso);">Sin colas</h5>
+                <p style="font-size:0.8rem; color:var(--texto-secundario); margin:0;">Recoge tu pedido cuando esté listo sin esperar.</p>
+            </div>
+            <div style="background:var(--avena); border-radius:var(--radio); padding:1.25rem; text-align:center;">
+                <i class="bi bi-credit-card-fill" style="font-size:2rem; color:var(--caramelo);"></i>
+                <h5 style="font-weight:700; font-size:0.85rem; margin-top:0.5rem; color:var(--espresso);">Pago fácil</h5>
+                <p style="font-size:0.8rem; color:var(--texto-secundario); margin:0;">Paga con tarjeta, Bizum o en efectivo.</p>
             </div>
         </div>
     </section>
 
-    <section class="py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4 animacion-fade">
-                    <div class="card text-center h-100 p-4">
-                        <div class="card-body">
-                            <i class="bi bi-phone-fill" style="font-size: 3rem; color: var(--color-cafe);"></i>
-                            <h5 class="card-title mt-3">Pide desde tu móvil</h5>
-                            <p class="card-text">Selecciona tus productos favoritos desde cualquier lugar del campus.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 animacion-fade">
-                    <div class="card text-center h-100 p-4">
-                        <div class="card-body">
-                            <i class="bi bi-clock-fill" style="font-size: 3rem; color: var(--color-cafe);"></i>
-                            <h5 class="card-title mt-3">Sin colas</h5>
-                            <p class="card-text">Recoge tu pedido cuando esté listo sin esperar en la fila.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 animacion-fade">
-                    <div class="card text-center h-100 p-4">
-                        <div class="card-body">
-                            <i class="bi bi-credit-card-fill" style="font-size: 3rem; color: var(--color-cafe);"></i>
-                            <h5 class="card-title mt-3">Pago fácil</h5>
-                            <p class="card-text">Paga con tarjeta, Bizum o en efectivo cuando recojas.</p>
-                        </div>
-                    </div>
-                </div>
+    <!-- DESTACADOS -->
+    <section style="padding:1.5rem 1rem 2.5rem; background:var(--avena);">
+        <h2 style="font-weight:800; font-size:1.2rem; text-align:center; color:var(--espresso); margin-bottom:1rem;">Productos Destacados</h2>
+        <div class="product-grid" id="destacadosContainer" style="max-width:900px; margin:0 auto;">
+            <div style="grid-column:1/-1; text-align:center; padding:1rem;">
+                <div class="loader"></div>
             </div>
         </div>
     </section>
-
-    <section class="py-5" style="background: var(--color-beige);">
-        <div class="container">
-            <h2 class="text-center fw-bold mb-4" style="color: var(--color-cafe-oscuro);">Productos Destacados</h2>
-            <div class="row g-4" id="destacadosContainer"></div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5><i class="bi bi-cup-hot-fill me-2"></i>CoffeeBreak</h5>
-                    <p>Tu cafetería universitaria inteligente. Pide rápido, recoge sin esperas.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Enlaces rápidos</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="menu.html">Menú</a></li>
-                        <li><a href="carrito.html">Carrito</a></li>
-                        <li><a href="historial.html">Mis pedidos</a></li>
-                        <li><a href="login.html">Iniciar sesión</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Horario</h5>
-                    <ul class="list-unstyled">
-                        <li>Lunes - Viernes: 7:30 - 20:00</li>
-                        <li>Sábados: 8:00 - 14:00</li>
-                        <li>Domingos: Cerrado</li>
-                    </ul>
-                    <div class="social-icons mt-3">
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="mt-4" style="border-color: rgba(255,255,255,0.1);">
-            <p class="text-center mb-0"><small>&copy; 2026 CoffeeBreak. Todos los derechos reservados.</small></p>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
@@ -154,38 +130,33 @@
                 const container = document.getElementById('destacadosContainer');
                 if (!container) return;
                 if (destacados.length === 0) {
-                    container.innerHTML = '<p class="text-center text-muted">No hay productos disponibles</p>';
+                    container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--texto-secundario);">No hay productos disponibles</p>';
                     return;
                 }
+                container.innerHTML = '';
                 destacados.forEach(producto => {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-6 col-lg-3';
-                    col.innerHTML = `
-                        <div class="card h-100 producto-card animacion-fade">
-                            <div class="card-img-top d-flex align-items-center justify-content-center">
-                                <i class="bi ${obtenerIconoProducto(producto.idCategoria)}" style="font-size: 3rem; color: var(--color-cafe);"></i>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">${producto.nombreProducto}</h5>
-                                <p class="card-text flex-grow-1">${producto.descripcion || ''}</p>
-                                <p class="precio">${producto.precio.toFixed(2)} €</p>
-                                <button class="btn btn-primary w-100" onclick="Carrito.agregar({idProducto: ${producto.idProducto}, nombreProducto: '${producto.nombreProducto.replace(/'/g, "\\'")}', precio: ${producto.precio}}, 1)">
-                                    <i class="bi bi-cart-plus me-2"></i>Añadir
+                    const iconos = {1:'bi-cup-hot-fill', 2:'bi-droplet-fill', 3:'bi-basket-fill', 4:'bi-egg-fried'};
+                    const icono = iconos[producto.idCategoria] || 'bi-box-seam-fill';
+                    const div = document.createElement('div');
+                    div.className = 'prod-card';
+                    div.innerHTML = `
+                        <div class="prod-img"><i class="bi ${icono}"></i></div>
+                        <div class="prod-body">
+                            <div class="prod-name">${producto.nombreProducto}</div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.35rem;">
+                                <span class="prod-price">${producto.precio.toFixed(2)} €</span>
+                                <button class="prod-add" onclick="Carrito.agregar({idProducto: ${producto.idProducto}, nombreProducto: '${producto.nombreProducto.replace(/'/g, "\\'")}', precio: ${producto.precio}}, 1)">
+                                    <i class="bi bi-plus-lg"></i>
                                 </button>
                             </div>
                         </div>
                     `;
-                    container.appendChild(col);
+                    container.appendChild(div);
                 });
             } catch (error) {
                 console.error('Error cargando destacados:', error);
             }
         });
-
-        function obtenerIconoProducto(idCategoria) {
-            const iconos = {1: 'bi-cup-hot-fill', 2: 'bi-droplet-fill', 3: 'bi-basket-fill', 4: 'bi-egg-fried'};
-            return iconos[idCategoria] || 'bi-box-seam-fill';
-        }
     </script>
 </body>
 </html>

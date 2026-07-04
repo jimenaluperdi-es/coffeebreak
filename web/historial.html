@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mis Pedidos - CoffeeBreak</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,87 +12,89 @@
     <div id="loaderGlobal" class="loader-container">
         <div class="loader"></div>
     </div>
-
     <div id="toastContainer" class="toast-container"></div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill"></i>Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="menu.html"><i class="bi bi-menu-app-fill"></i>Menú</a></li>
-                    <li class="nav-item"><a class="nav-link" href="carrito.html"><i class="bi bi-cart-fill"></i>Carrito <span class="carrito-badge">0</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="historial.html"><i class="bi bi-clock-fill"></i>Pedidos</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item" id="navLogin"><a class="nav-link" href="login.html"><i class="bi bi-box-arrow-in-right"></i>Iniciar Sesión</a></li>
-                    <li class="nav-item" id="navRegistro"><a class="nav-link" href="registro.html"><i class="bi bi-person-plus-fill"></i>Registrarse</a></li>
-                    <li class="nav-item" id="navPerfil" style="display:none;"><a class="nav-link" href="historial.html"><i class="bi bi-person-fill"></i><span id="navUsuario">Usuario</span></a></li>
-                    <li class="nav-item" id="navCerrarSesion" style="display:none;"><a class="nav-link" href="#" onclick="cerrarSesion()"><i class="bi bi-box-arrow-right"></i>Cerrar Sesión</a></li>
-                </ul>
+    <!-- DESKTOP NAV -->
+    <nav class="desktop-nav">
+        <div class="dnav-inner">
+            <div class="dnav-left">
+                <div class="dnav-links">
+                    <a href="menu.html">Menú</a>
+                    <a href="carrito.html">Carrito</a>
+                    <a href="historial.html" class="active">Mis Pedidos</a>
+                </div>
+            </div>
+            <a href="index.html" class="dnav-center dnav-brand"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
+            <div class="dnav-right">
+                <div class="dnav-guest">
+                    <a href="login.html">Iniciar Sesión</a>
+                    <a href="registro.html" class="dnav-btn">Registrarse</a>
+                </div>
+                <div class="dnav-user">
+                    <span class="dnav-user-name"><i class="bi bi-person-fill"></i><span id="dnavUserName">Usuario</span></span>
+                    <a href="#" onclick="cerrarSesion()">Cerrar Sesión</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="page-header">
-        <div class="container">
-            <h1 class="animacion-fade"><i class="bi bi-clock-fill me-2"></i>Mis Pedidos</h1>
-            <p class="animacion-fade">Historial de todos tus pedidos realizados</p>
+    <!-- DRAWER -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="cerrarDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <div class="brand"><i class="bi bi-cup-hot-fill"></i> CoffeeBreak</div>
+        </div>
+        <div class="drawer-user nav-user" style="display:none;">
+            <div class="avatar" id="drawerAvatar">U</div>
+            <div>
+                <div class="user-name" id="drawerUserName">Usuario</div>
+                <div class="user-email" id="drawerUserEmail">usuario@email.com</div>
+            </div>
+        </div>
+        <div class="drawer-nav">
+            <a href="index.html"><i class="bi bi-house-fill"></i>Inicio</a>
+            <a href="menu.html"><i class="bi bi-menu-app-fill"></i>Menú</a>
+            <a href="carrito.html"><i class="bi bi-cart-fill"></i>Carrito</a>
+            <a href="historial.html" class="active"><i class="bi bi-clock-fill"></i>Mis Pedidos</a>
+            <a href="login.html" class="nav-guest"><i class="bi bi-box-arrow-in-right"></i>Iniciar Sesión</a>
+            <a href="registro.html" class="nav-guest"><i class="bi bi-person-plus-fill"></i>Registrarse</a>
+            <a href="#" class="nav-user" style="display:none;" onclick="cerrarSesion()"><i class="bi bi-box-arrow-right"></i>Cerrar Sesión</a>
         </div>
     </div>
 
-    <section class="py-4">
-        <div class="container">
-            <div id="historialContainer"></div>
+    <!-- APP BAR -->
+    <div class="app-bar">
+        <button class="btn-icon" onclick="abrirDrawer()"><i class="bi bi-list"></i></button>
+        <a href="index.html" class="brand"><i class="bi bi-cup-hot-fill"></i>CoffeeBreak</a>
+        <div class="app-bar-right">
+            <a href="carrito.html" class="btn-icon">
+                <i class="bi bi-cart-fill"></i>
+                <span class="carrito-badge-mobile" id="cartBadgeMobile">0</span>
+            </a>
         </div>
-    </section>
+    </div>
 
+    <div class="tracking-page">
+        <h1 class="page-title">Mis Pedidos</h1>
+        <p class="page-sub">Sigue el estado de tus pedidos en tiempo real</p>
+        <div id="historialContainer"></div>
+    </div>
+
+    <!-- MODAL DETALLE -->
     <div class="modal fade" id="detallePedidoModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header" style="background: var(--color-cafe); color: var(--color-blanco);">
-                    <h5 class="modal-title"><i class="bi bi-receipt me-2"></i>Detalle del Pedido</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content" style="border-radius:var(--radio); border:none;">
+                <div class="modal-header" style="border-bottom:1px solid var(--avena-oscuro);">
+                    <h5 class="modal-title fw-bold" style="color:var(--espresso);"><i class="bi bi-receipt me-2" style="color:var(--caramelo);"></i>Detalle del Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" id="detallePedidoBody"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <div class="modal-body" id="detallePedidoBody" style="padding:1.25rem;"></div>
+                <div class="modal-footer" style="border-top:1px solid var(--avena-oscuro);">
+                    <button type="button" class="btn-outline-custom" data-bs-dismiss="modal" style="flex:none; padding:0.5rem 1.5rem;">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h5><i class="bi bi-cup-hot-fill me-2"></i>CoffeeBreak</h5>
-                    <p>Tu cafetería universitaria inteligente.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Enlaces rápidos</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="menu.html">Menú</a></li>
-                        <li><a href="carrito.html">Carrito</a></li>
-                        <li><a href="historial.html">Mis pedidos</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Horario</h5>
-                    <ul class="list-unstyled">
-                        <li>Lunes - Viernes: 7:30 - 20:00</li>
-                        <li>Sábados: 8:00 - 14:00</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="mt-4" style="border-color: rgba(255,255,255,0.1);">
-            <p class="text-center mb-0"><small>&copy; 2026 CoffeeBreak</small></p>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>

@@ -12,37 +12,20 @@ const Validaciones = {
     esCantidadValida: function(cantidad) {
         return Number.isInteger(cantidad) && cantidad > 0;
     },
-    mostrarError: function(mensaje) {
-        Toast.mostrar(mensaje, 'danger');
-    },
-    mostrarExito: function(mensaje) {
-        Toast.mostrar(mensaje, 'success');
-    },
 };
 
 const Toast = {
     mostrar: function(mensaje, tipo = 'success') {
         const container = document.getElementById('toastContainer');
         if (!container) return;
-        const bgClass = tipo === 'success' ? 'bg-success' : tipo === 'danger' ? 'bg-danger' : tipo === 'warning' ? 'bg-warning' : 'bg-info';
-        const icono = tipo === 'success' ? 'bi-check-circle' : tipo === 'danger' ? 'bi-exclamation-circle' : tipo === 'warning' ? 'bi-exclamation-triangle' : 'bi-info-circle';
+        const icono = tipo === 'success' ? 'bi-check-circle-fill' : tipo === 'danger' ? 'bi-x-circle-fill' : tipo === 'warning' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill';
         const toast = document.createElement('div');
-        toast.className = `toast align-items-center text-white ${bgClass} border-0 show`;
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'assertive');
-        toast.setAttribute('aria-atomic', 'true');
-        toast.innerHTML = `
-            <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi ${icono} me-2"></i>${mensaje}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        `;
+        toast.className = `toast-custom ${tipo}`;
+        toast.innerHTML = `<i class="bi ${icono}"></i> ${mensaje}`;
         container.appendChild(toast);
         setTimeout(() => {
-            toast.classList.remove('show');
+            toast.style.opacity = '0';
             setTimeout(() => toast.remove(), 300);
-        }, 4000);
+        }, 3500);
     },
 };

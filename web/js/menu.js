@@ -4,9 +4,12 @@ let categoriaActiva = 'todas';
 document.addEventListener('DOMContentLoaded', function() {
     cargarCategorias();
     cargarProductos();
-    document.getElementById('busquedaInput').addEventListener('input', function() {
-        filtrarProductos();
-    });
+    const searchInput = document.getElementById('busquedaInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            filtrarProductos();
+        });
+    }
 });
 
 async function cargarCategorias() {
@@ -14,12 +17,12 @@ async function cargarCategorias() {
         const categorias = await API.get(API.getBaseUrl() + '/api/categorias');
         const container = document.getElementById('categoriasContainer');
         if (!container) return;
-        container.innerHTML = '<button class="categoria-btn active me-2 mb-2" onclick="filtrarPorCategoria(\'todas\', this)">Todas</button>';
+        container.innerHTML = '<button class="pill active" onclick="filtrarPorCategoria(\'todas\', this)">Todas</button>';
         categorias.forEach(cat => {
-            container.innerHTML += `<button class="categoria-btn me-2 mb-2" onclick="filtrarPorCategoria(${cat.idCategoria}, this)">${cat.nombreCategoria}</button>`;
+            container.innerHTML += `<button class="pill" onclick="filtrarPorCategoria(${cat.idCategoria}, this)">${cat.nombreCategoria}</button>`;
         });
     } catch (error) {
-        Toast.mostrar('Error al cargar categorías: ' + error.message, 'danger');
+        Toast.mostrar('Error al cargar categorías', 'danger');
     }
 }
 
@@ -30,7 +33,7 @@ async function cargarProductos() {
         productosGlobales = productos;
         renderizarProductos(productos);
     } catch (error) {
-        Toast.mostrar('Error al cargar productos: ' + error.message, 'danger');
+        Toast.mostrar('Error al cargar productos', 'danger');
     } finally {
         ocultarLoader();
     }
@@ -41,52 +44,43 @@ function renderizarProductos(productos) {
     if (!container) return;
     if (!productos || productos.length === 0) {
         container.innerHTML = `
-            <div class="col-12">
+            <div style="grid-column:1/-1;">
                 <div class="empty-state">
                     <i class="bi bi-search"></i>
                     <h4>No se encontraron productos</h4>
-                    <p class="text-muted">Intenta con otros términos de búsqueda</p>
+                    <p>Intenta con otros términos de búsqueda</p>
                 </div>
             </div>
         `;
         return;
     }
     container.innerHTML = '';
+    const iconos = {1:'bi-cup-hot-fill', 2:'bi-droplet-fill', 3:'bi-basket-fill', 4:'bi-egg-fried'};
     productos.forEach(producto => {
-        const col = document.createElement('div');
-        col.className = 'col-md-6 col-lg-4 col-xl-3 mb-4 animacion-fade';
-        col.innerHTML = `
-            <div class="card producto-card h-100">
-                <div class="card-img-top d-flex align-items-center justify-content-center">
-                    <i class="bi ${obtenerIconoProducto(producto.idCategoria)}" style="font-size: 3rem; color: var(--color-cafe);"></i>
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${producto.nombreProducto}</h5>
-                    <p class="card-text flex-grow-1">${producto.descripcion || 'Sin descripción'}</p>
-                    <p class="precio">${producto.precio.toFixed(2)} €</p>
-                    <button class="btn btn-primary w-100" onclick="Carrito.agregar({idProducto: ${producto.idProducto}, nombreProducto: '${producto.nombreProducto.replace(/'/g, "\\'")}', precio: ${producto.precio}}, 1)">
-                        <i class="bi bi-cart-plus me-2"></i>Añadir
+        const icono = iconos[producto.idCategoria] || 'bi-box-seam-fill';
+        const div = document.createElement('div');
+        div.className = 'prod-card';
+        div.innerHTML = `
+            <div class="prod-img">
+                <i class="bi ${icono}"></i>
+            </div>
+            <div class="prod-body">
+                <div class="prod-name">${producto.nombreProducto}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.35rem;">
+                    <span class="prod-price">${producto.precio.toFixed(2)} €</span>
+                    <button class="prod-add" onclick="Carrito.agregar({idProducto: ${producto.idProducto}, nombreProducto: '${producto.nombreProducto.replace(/'/g, "\\'")}', precio: ${producto.precio}}, 1)">
+                        <i class="bi bi-plus-lg"></i>
                     </button>
                 </div>
             </div>
         `;
-        container.appendChild(col);
+        container.appendChild(div);
     });
-}
-
-function obtenerIconoProducto(idCategoria) {
-    const iconos = {
-        1: 'bi-cup-hot-fill',
-        2: 'bi-droplet-fill',
-        3: 'bi-basket-fill',
-        4: 'bi-egg-fried',
-    };
-    return iconos[idCategoria] || 'bi-box-seam-fill';
 }
 
 function filtrarPorCategoria(categoria, btn) {
     categoriaActiva = categoria;
-    document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     filtrarProductos();
 }
